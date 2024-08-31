@@ -1,7 +1,9 @@
 import ChatHeader from "@/components/ChatHeader";
-import InitUser from "@/lib/store/initUser";
+import ChatInput from "@/components/ChatInput";
+import ChatMessages from "@/components/ChatMessages";
+import ListMessages from "@/components/ListMessages";
+import InitUser from "@/lib/store/InitUser";
 import { createClient } from "@/utils/supabase/server";
-import React from "react";
 
 export default async function page() {
   const supabase = createClient();
@@ -10,8 +12,10 @@ export default async function page() {
   return (
     <>
       <div className="max-w-3xl mx-auto md:py-10 h-screen">
-        <div className="h-full border rounded-md">
+        <div className="h-full border rounded-md flex flex-col">
           <ChatHeader user={data?.user} />
+          <ChatMessages />
+          <ChatInput />
         </div>
       </div>
       <InitUser user={data?.user} />
