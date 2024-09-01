@@ -17,18 +17,24 @@ export type IMessage = {
 interface MessageState {
   messages: IMessage[];
   actionMessage: IMessage | null;
+  optimisticIds: string[];
   addMessage: (message: IMessage) => void;
   setActionMessage: (message: IMessage | null) => void;
   optimisticDeleteMessage: (messageId: string) => void;
+  optimisticUpdateMessage: (message: IMessage) => void;
+  setOptimisticIds: (id: string) => void;
 }
 
 export const useMessageStore = create<MessageState>()((set) => ({
   messages: [],
   actionMessage: null,
-  addMessage: (message) =>
+  optimisticIds: [],
+  addMessage: (newMessages) =>
     set((state) => ({
-      messages: [...state.messages, message],
+      messages: [...state.messages, newMessages],
     })),
+  setOptimisticIds: (id: string) =>
+    set((state) => ({ optimisticIds: [...state.optimisticIds, id] })),
   setActionMessage: (message) =>
     set(() => ({
       actionMessage: message,
@@ -37,6 +43,18 @@ export const useMessageStore = create<MessageState>()((set) => ({
     set((state) => {
       return {
         messages: state.messages.filter((message) => message.id !== messageId),
+      };
+    }),
+  optimisticUpdateMessage: (updateMessage) =>
+    set((state) => {
+      return {
+        messages: state.messages.filter((message) => {
+          if (message.id === updateMessage.id) {
+            (message.text = updateMessage.text),
+              (message.is_edited = updateMessage.is_edited);
+          }
+          return message;
+        }),
       };
     }),
 }));
