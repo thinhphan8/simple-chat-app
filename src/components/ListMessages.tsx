@@ -2,16 +2,22 @@
 
 import { IMessage, useMessageStore } from "@/lib/store/messages";
 import { createClient } from "@/utils/supabase/client";
-import { useEffect, useRef } from "react";
+import { ArrowDown } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import Message from "./Message";
 import { DeleteAlert, EditAlert } from "./MessageActions";
 
 export default function ListMessages() {
   const scrollRef = useRef() as React.MutableRefObject<HTMLDivElement>;
-  const { messages, addMessage, optimisticIds, optimisticDeleteMessage, optimisticUpdateMessage } = useMessageStore(
-    (state) => state
-  );
+  const [userScrolled, setUserScrolled] = useState(false);
+  const {
+    messages,
+    addMessage,
+    optimisticIds,
+    optimisticDeleteMessage,
+    optimisticUpdateMessage,
+  } = useMessageStore((state) => state);
   const supabase = createClient();
 
   useEffect(() => {
@@ -70,10 +76,24 @@ export default function ListMessages() {
     }
   }, [messages]);
 
+  const handleOnScroll = () => {
+    const scrollContainer = scrollRef.current;
+    if (scrollContainer) {
+      const isScroll =
+        scrollContainer.scrollTop < scrollContainer.clientHeight - 10;
+      setUserScrolled(isScroll);
+    }
+  };
+
+  const handleScrollDown = () => {
+    scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+  }
+
   return (
     <div
       className="flex-1 flex flex-col p-5 h-full overflow-y-auto"
       ref={scrollRef}
+      onScroll={handleOnScroll}
     >
       <div className="flex-1"></div>
       <div className="space-y-7">
@@ -81,6 +101,20 @@ export default function ListMessages() {
           return <Message key={index} message={value} />;
         })}
       </div>
+      {userScrolled && (
+        <div className="absolute bottom-20 right-1/2">
+          <div
+            className="w-10 h-10 
+        bg-blue-500 rounded-full 
+        justify-center items-center 
+        flex mx-auto border cursor-pointer
+        hover:scale-110 transition-all"
+            onClick={handleScrollDown}
+          >
+            <ArrowDown />
+          </div>
+        </div>
+      )}
       <DeleteAlert />
       <EditAlert />
     </div>
