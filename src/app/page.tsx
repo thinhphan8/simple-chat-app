@@ -2,9 +2,8 @@ import ChatAbout from "@/components/ChatAbout";
 import ChatHeader from "@/components/ChatHeader";
 import ChatInput from "@/components/ChatInput";
 import ChatMessages from "@/components/ChatMessages";
-import ListMessages from "@/components/ListMessages";
 import InitUser from "@/lib/store/InitUser";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 
 export default async function page() {
   const supabase = createClient();

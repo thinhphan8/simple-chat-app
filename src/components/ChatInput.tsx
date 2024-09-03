@@ -2,7 +2,7 @@
 
 import { IMessage, useMessageStore } from "@/lib/store/messages";
 import { useUserStore } from "@/lib/store/user";
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import { v4 as uuidv4 } from "uuid";
 import { Input } from "./ui/input";

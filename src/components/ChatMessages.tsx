@@ -1,5 +1,5 @@
 import InitMessages from "@/lib/store/InitMessages";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { Suspense } from "react";
 import ListMessages from "./ListMessages";
 import { LIMIT_MESSAGE } from "@/lib/constants";

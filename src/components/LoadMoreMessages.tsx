@@ -1,8 +1,8 @@
 import React from "react";
 import { Button } from "./ui/button";
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import { LIMIT_MESSAGE } from "@/lib/constants";
-import { getFromAndTo } from "@/lib/utils";
+import { getFromAndTo } from "@/utils/utils";
 import { useMessageStore } from "@/lib/store/messages";
 import { toast } from "sonner";
 

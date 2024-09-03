@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { IMessage, useMessageStore } from "@/lib/store/messages";
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import React, { useRef } from "react";
 import { toast } from "sonner";
 

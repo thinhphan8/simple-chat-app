@@ -1,7 +1,7 @@
 "use client";
 
 import { IMessage, useMessageStore } from "@/lib/store/messages";
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import { ArrowDown } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";

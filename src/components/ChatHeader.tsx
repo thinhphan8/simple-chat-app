@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Button } from "./ui/button";
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import { User } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 import ChatPresence from "./ChatPresence";
