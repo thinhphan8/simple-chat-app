@@ -9,7 +9,7 @@ import { DeleteAlert, EditAlert } from "./MessageActions";
 
 export default function ListMessages() {
   const scrollRef = useRef() as React.MutableRefObject<HTMLDivElement>;
-  const { messages, addMessage, optimisticIds } = useMessageStore(
+  const { messages, addMessage, optimisticIds, optimisticDeleteMessage, optimisticUpdateMessage } = useMessageStore(
     (state) => state
   );
   const supabase = createClient();
@@ -21,7 +21,7 @@ export default function ListMessages() {
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "messages" },
         async (payload) => {
-          console.log("Change received!", payload);
+          // console.log("Change received!", payload);
           if (!optimisticIds.includes(payload.new.id)) {
             const { error, data } = await supabase
               .from("users")
@@ -38,6 +38,22 @@ export default function ListMessages() {
               addMessage(newMessage as IMessage);
             }
           }
+        }
+      )
+      .on(
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "messages" },
+        (payload) => {
+          // console.log("Change received!", payload);
+          optimisticUpdateMessage(payload.new as IMessage);
+        }
+      )
+      .on(
+        "postgres_changes",
+        { event: "DELETE", schema: "public", table: "messages" },
+        (payload) => {
+          // console.log("Change received!", payload);
+          optimisticDeleteMessage(payload.old.id);
         }
       )
       .subscribe();
